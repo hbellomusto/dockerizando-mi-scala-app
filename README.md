@@ -72,6 +72,13 @@ COPY --from=building /building/target/scala-2.12/mi-scala-app-assembly-*.jar /ap
 WORKDIR /app
 ENTRYPOINT java -jar mi-scala-app-assembly-*.jar
 ```
+3. _(optimización)_ Agregar un _.dockerignore_:
+```bash
+target
+.idea
+.git
+**/target
+``` 
 4. Ejecutar `docker build . -t mi-scala-app`
 5. _Enjoy_ `docker run -p 8081:8081 mi-scala-app`
 
@@ -79,14 +86,9 @@ Ventajas:
 - Solo se necesita _docker_ para el _building_ de la imagen (útil para CI)
 
 Desventajas:
-- no se aprovecha la caché de .ivy
-### Optimización 1: _.dockerignore_
-```bash
-target
-.idea
-**/target
-``` 
-### Optimización 2: montar una cache de _.ivy2_ con _buildkit_
+- no se aprovecha la caché de _.ivy_. _sbt_ se toma su tiempo cuando no tiene _caches_
+
+### Optimización 1: montar una cache de _.ivy2_ con _buildkit_
 1. Crear un _Dockerfile_ _multistage_ y montar una cache de ivy2 para que reutilice las dependencias bajadas previamente:
 ```dockerfile
 # syntax = docker/dockerfile:experimental
