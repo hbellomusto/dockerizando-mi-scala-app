@@ -18,4 +18,18 @@ lazy val root = (project in file("."))
       "com.github.pureconfig" %% "pureconfig"          % pureConfigVersion
     )
   )
+  .enablePlugins(DockerPlugin)
+  .settings(
+    dockerfile in docker := {
+      // The assembly task generates a fat JAR file
+      val artifact: File = assembly.value
+      val artifactTargetPath = s"/app/${artifact.name}"
+
+      new Dockerfile {
+        from("openjdk:8-jre")
+        add(artifact, artifactTargetPath)
+        entryPoint("java", "-jar", artifactTargetPath)
+      }
+    }
+  )
 
