@@ -32,4 +32,20 @@ lazy val root = (project in file("."))
       }
     }
   )
+  .settings(
+    imageNames in docker := Seq(
+      ImageName(
+        registry = Some("localhost:5000"),
+        //namespace = Some(organization.value),
+        repository = name.value,
+        tag = Some(version.value)
+      ),
+      ImageName(
+        registry = Some("localhost:5000"),
+        //namespace = Some(organization.value),
+        repository = name.value,
+        tag = Some("latest")
+      )
+  )
+)
 
