@@ -18,4 +18,5 @@ lazy val root = (project in file("."))
       "com.github.pureconfig" %% "pureconfig"          % pureConfigVersion
     )
   )
+  .enablePlugins(JavaAppPackaging)
 
