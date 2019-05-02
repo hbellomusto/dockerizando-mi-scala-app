@@ -26,5 +26,10 @@ lazy val root = (project in file("."))
     dockerUpdateLatest := true,
     dockerRepository := Some("localhost:5000"),
     defaultLinuxInstallLocation in Docker := "/app",
-    dockerExposedPorts := Seq(8081)
+    dockerExposedPorts := Seq(8081),
+    bashScriptExtraDefines ++= Seq(
+      """addJava "-Dconfig.file=${app_home}/../conf/application.conf"""",
+      """addJava "-Dlogback.configurationFile=${app_home}/../conf/logback.xml"""",
+    )
+
   )
